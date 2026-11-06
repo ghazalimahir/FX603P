@@ -24,8 +24,8 @@
   --case-hi: #26272a;
   --panel: #232427;          /* upper key panel */
   --bezel: #0b0b0c;
-  --lcd: #aab7a0;
-  --lcd-edge: #8f9b86;
+  --lcd: #c3cfb7;
+  --lcd-edge: #a3ae97;
   --cap-light: #c9ccd1;      /* P / HLT row keys */
   --cap-light-lo: #9a9da3;
   --ink-dark: #16171a;
@@ -8036,8 +8036,8 @@ Calculator_Static_Init();
     draw();
   }
   // dot-matrix geometry (logical units): 5 x 7 dots per character
-  const DOT_PITCH = 6, DOT_SIZE = 4.3, CHAR_PITCH = 36, ROW_Y = [40, 96], MARGIN = 10;
-  const INK = '#0b0e08', UNLIT = 'rgba(11,14,8,.07)';
+  const DOT_PITCH = 6, DOT_SIZE = 4.7, CHAR_PITCH = 36, ROW_Y = [40, 96], MARGIN = 10;
+  const INK = '#000', UNLIT = 'rgba(0,0,0,.03)';
   function draw() {
     const k = Math.min(canvas.width / LW, canvas.height / LH);
     const ox = (canvas.width - LW * k) / 2, oy = (canvas.height - LH * k) / 2;
@@ -8076,7 +8076,7 @@ Calculator_Static_Init();
     let x = MARGIN;
     for (const i of IND_ORDER) {
       const w = ctx.measureText(IND_TEXT[i]).width * sc;
-      ctx.fillStyle = ind[i] ? INK : 'rgba(11,14,8,.08)';
+      ctx.fillStyle = ind[i] ? INK : 'rgba(0,0,0,.05)';
       ctx.save();
       ctx.translate(x, 18);
       ctx.scale(sc, 1);
