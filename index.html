@@ -169,6 +169,7 @@ body {
 .btn { font: 600 14px/1 var(--font-ui); letter-spacing: .03em; padding: 9px 12px; border-radius: 7px; border: 1px solid var(--sheet-line); background: #fff; color: var(--sheet-ink); cursor: pointer; }
 .btn.primary { background: var(--sheet-ink); color: var(--sheet); border-color: var(--sheet-ink); }
 .btn.danger { color: var(--danger); }
+.seg .btn[aria-pressed="true"] { background: var(--sheet-ink); color: var(--sheet); border-color: var(--sheet-ink); }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 textarea { width: 100%; min-height: 64px; font: 13px var(--font-mono); padding: 8px; border-radius: 6px; border: 1px solid var(--sheet-line); background: #fff; color: var(--sheet-ink); resize: vertical; }
 .help h3 { margin: 6px 0 0; font-size: 16px; font-weight: 700; letter-spacing: .02em; }
@@ -198,7 +199,7 @@ a { color: #1d5d99; }
 <body>
 <div class="app">
   <header class="bar">
-    <div class="brand">FX-603P<span class="ver">v5</span><small>Simulator</small></div>
+    <div class="brand">FX-603P<span class="ver">v6</span><small>Simulator</small></div>
     <nav class="tools" aria-label="Menu">
       <button type="button" class="tool" data-sheet="data" aria-pressed="false" title="Simpan / salin program">Data</button>
       <button type="button" class="tool" data-sheet="help" aria-pressed="false" title="Bantuan" aria-label="Bantuan">?</button>
@@ -226,6 +227,12 @@ a { color: #1d5d99; }
 <section class="sheet" id="sheet-data" hidden aria-labelledby="h-data">
   <div class="sheet-head"><h2 id="h-data">Program dan memori</h2><button type="button" class="btn sheet-close">Tutup</button></div>
   <div class="sheet-body">
+    <h3 style="margin:0;font-size:16px">Kontras LCD</h3>
+    <div class="row seg" role="group" aria-label="Kontras LCD">
+      <button type="button" class="btn" data-contrast="0" aria-pressed="false">Biasa</button>
+      <button type="button" class="btn" data-contrast="1" aria-pressed="false">Tinggi</button>
+      <button type="button" class="btn" data-contrast="2" aria-pressed="false">Paling tinggi</button>
+    </div>
     <p class="muted">Semua program (P0–P9, P10–P19) dan memori disimpan automatik dalam pelayar ini dan dipulihkan bila halaman dibuka semula.</p>
     <p id="data-summary"></p>
     <h3 style="margin:4px 0 0;font-size:16px">Salin ke peranti lain</h3>
@@ -8037,8 +8044,27 @@ Calculator_Static_Init();
     draw();
   }
   // dot-matrix geometry (logical units): 5 x 7 dots per character
-  const DOT_PITCH = 6, DOT_SIZE = 5.1, CHAR_PITCH = 36, ROW_Y = [40, 96], MARGIN = 10;
-  const INK = '#000', UNLIT = 'rgba(0,0,0,.03)';
+  const DOT_PITCH = 6, CHAR_PITCH = 36, ROW_Y = [40, 96], MARGIN = 10;
+  const INK = '#000';
+  // contrast levels chosen in the Data sheet: dot size (of a 6-unit pitch), unlit dot alpha, LCD background
+  const CONTRAST = [
+    { dot: 4.8, unlit: 0.04, bg: '#bfcbb3' },
+    { dot: 5.5, unlit: 0.025, bg: '#cbd6c0' },
+    { dot: 6.0, unlit: 0.0, bg: '#d7e0cd' },
+  ];
+  let contrast = 1;
+  try { contrast = Math.min(2, Math.max(0, +(localStorage.getItem('fx603p/contrast') ?? 1))); } catch (e) { /* ignore */ }
+  let DOT_SIZE = CONTRAST[contrast].dot, UNLIT = 'rgba(0,0,0,' + CONTRAST[contrast].unlit + ')';
+  function applyContrast(level) {
+    contrast = level;
+    DOT_SIZE = CONTRAST[level].dot;
+    UNLIT = 'rgba(0,0,0,' + CONTRAST[level].unlit + ')';
+    document.documentElement.style.setProperty('--lcd', CONTRAST[level].bg);
+    document.querySelectorAll('[data-contrast]').forEach(b =>
+      b.setAttribute('aria-pressed', String(+b.dataset.contrast === level)));
+    try { localStorage.setItem('fx603p/contrast', String(level)); } catch (e) { /* ignore */ }
+    draw();
+  }
   function draw() {
     const k = Math.min(canvas.width / LW, canvas.height / LH);
     const ox = (canvas.width - LW * k) / 2, oy = (canvas.height - LH * k) / 2;
@@ -8087,6 +8113,9 @@ Calculator_Static_Init();
     }
   }
   new ResizeObserver(size).observe(canvas);
+  document.querySelectorAll('[data-contrast]').forEach(b =>
+    b.addEventListener('click', () => applyContrast(+b.dataset.contrast)));
+  applyContrast(contrast);
 
   // ---------------------------------------------------------------- "Form" (ICalculatorCanvas) for the engine
   const form = {
