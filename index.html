@@ -210,7 +210,7 @@ a { color: #1d5d99; }
       <span>MODE<b>►</b></span><span>1<b>RUN</b></span><span>2<b>WRT</b></span><span>3<b>PCL</b></span><span>4<b>DEG</b></span>
       <span>5<b>RAD</b></span><span>6<b>GRA</b></span><span>+<b>COMP</b></span><span>−<b class="bn">BASE-N</b></span><span>×<b>I/O</b></span>
     </div>
-    <div class="display-foot"><span id="foot-steps"></span><span id="foot-mem">M00–M99 · 0F–9F</span></div>
+    <div class="display-foot"><span id="foot-steps"></span><span id="foot-mem">M00–M99 · 0F–9F · v4</span></div>
     <span id="lcd-text" class="sr-only" aria-live="polite"></span>
   </section>
 
@@ -8036,7 +8036,7 @@ Calculator_Static_Init();
     draw();
   }
   // dot-matrix geometry (logical units): 5 x 7 dots per character
-  const DOT_PITCH = 6, DOT_SIZE = 4.7, CHAR_PITCH = 36, ROW_Y = [40, 96], MARGIN = 10;
+  const DOT_PITCH = 6, DOT_SIZE = 5.1, CHAR_PITCH = 36, ROW_Y = [40, 96], MARGIN = 10;
   const INK = '#000', UNLIT = 'rgba(0,0,0,.03)';
   function draw() {
     const k = Math.min(canvas.width / LW, canvas.height / LH);
