@@ -76,6 +76,7 @@ body {
 .brand { font-weight: 700; font-size: 17px; letter-spacing: .06em; white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .brand small { font-weight: 500; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #8f939a; margin-left: 6px; }
 .tools { display: flex; gap: 6px; flex-shrink: 0; }
+.ver { font-weight: 600; font-size: 13px; letter-spacing: .04em; color: var(--accent); margin-left: 8px; }
 @media (max-width: 420px) { .brand small { display: none; } .tool { padding: 7px 9px; } }
 .tool {
   font: 600 13px/1 var(--font-ui); letter-spacing: .06em; color: var(--ink-light);
@@ -197,7 +198,7 @@ a { color: #1d5d99; }
 <body>
 <div class="app">
   <header class="bar">
-    <div class="brand">FX-603P<small>Simulator</small></div>
+    <div class="brand">FX-603P<span class="ver">v5</span><small>Simulator</small></div>
     <nav class="tools" aria-label="Menu">
       <button type="button" class="tool" data-sheet="data" aria-pressed="false" title="Simpan / salin program">Data</button>
       <button type="button" class="tool" data-sheet="help" aria-pressed="false" title="Bantuan" aria-label="Bantuan">?</button>
@@ -210,7 +211,7 @@ a { color: #1d5d99; }
       <span>MODE<b>►</b></span><span>1<b>RUN</b></span><span>2<b>WRT</b></span><span>3<b>PCL</b></span><span>4<b>DEG</b></span>
       <span>5<b>RAD</b></span><span>6<b>GRA</b></span><span>+<b>COMP</b></span><span>−<b class="bn">BASE-N</b></span><span>×<b>I/O</b></span>
     </div>
-    <div class="display-foot"><span id="foot-steps"></span><span id="foot-mem">M00–M99 · 0F–9F · v4</span></div>
+    <div class="display-foot"><span id="foot-steps"></span><span id="foot-mem">M00–M99 · 0F–9F</span></div>
     <span id="lcd-text" class="sr-only" aria-live="polite"></span>
   </section>
 
