@@ -1,0 +1,25 @@
+{
+  "name": "FX-603P Simulator",
+  "short_name": "FX-603P",
+  "description": "Simulator kalkulator FX-603P dengan program ukur",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#18191b",
+  "theme_color": "#18191b",
+  "lang": "ms",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
